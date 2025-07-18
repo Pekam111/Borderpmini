@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Palette, Eye, Grid3X3 } from 'lucide-react';
+import { Download, Palette, Eye, Grid } from 'lucide-react';
 
 const A4BorderDesigner = () => {
   const [borderWidth, setBorderWidth] = useState(0.8);
@@ -248,7 +248,7 @@ const A4BorderDesigner = () => {
                   onClick={() => setShowIconPanel(!showIconPanel)}
                   className="flex items-center space-x-2 mb-2 text-blue-600"
                 >
-                  <Grid3X3 size={20} />
+                  <Grid size={20} />
                   <span>Border Icons ({selectedIcons.length})</span>
                 </button>
 
