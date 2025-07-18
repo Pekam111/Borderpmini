@@ -125,14 +125,12 @@ const A4BorderDesigner = () => {
           </div>
           
           <div className="flex flex-col lg:flex-row">
-            {/* Controls Panel */}
             <div className="lg:w-1/3 p-6 bg-gray-50 border-r border-gray-200">
               <h2 className="text-xl font-semibold mb-4 flex items-center">
                 <Palette className="mr-2" size={20} />
                 Border Settings
               </h2>
               
-              {/* Border Width */}
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Border Width (cm)</label>
                 <input
@@ -147,7 +145,6 @@ const A4BorderDesigner = () => {
                 <span className="text-sm text-gray-600">{borderWidth}cm</span>
               </div>
               
-              {/* Border Style */}
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Border Style</label>
                 <select
@@ -163,7 +160,6 @@ const A4BorderDesigner = () => {
                 </select>
               </div>
               
-              {/* Gradient Direction */}
               {borderStyle === 'gradient' && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-2">Gradient Direction</label>
@@ -179,7 +175,6 @@ const A4BorderDesigner = () => {
                 </div>
               )}
               
-              {/* Pattern Type */}
               {borderStyle === 'pattern' && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-2">Pattern Type</label>
@@ -194,7 +189,6 @@ const A4BorderDesigner = () => {
                 </div>
               )}
               
-              {/* Colors */}
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Colors</label>
                 <div className="grid grid-cols-2 gap-2">
@@ -217,7 +211,6 @@ const A4BorderDesigner = () => {
                 </div>
               </div>
               
-              {/* Preset Colors */}
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Color Presets</label>
                 <div className="grid grid-cols-1 gap-2">
@@ -242,7 +235,6 @@ const A4BorderDesigner = () => {
                 </div>
               </div>
               
-              {/* Icon Selection */}
               <div className="mb-6">
                 <button 
                   onClick={() => setShowIconPanel(!showIconPanel)}
@@ -324,7 +316,6 @@ const A4BorderDesigner = () => {
                 )}
               </div>
               
-              {/* Content */}
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Document Title</label>
                 <input
@@ -345,7 +336,6 @@ const A4BorderDesigner = () => {
                 />
               </div>
               
-              {/* Download Button */}
               <button
                 onClick={() => {
                   const html = document.documentElement.outerHTML;
@@ -363,7 +353,6 @@ const A4BorderDesigner = () => {
               </button>
             </div>
             
-            {/* Preview Panel */}
             <div className="lg:w-2/3 p-6">
               <h2 className="text-xl font-semibold mb-4 flex items-center">
                 <Eye className="mr-2" size={20} />
