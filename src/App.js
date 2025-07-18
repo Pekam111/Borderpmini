@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Palette, RotateCcw, Eye, Shuffle, Grid3X3 } from 'lucide-react';
+import { Download, Palette, Eye, Grid3X3 } from 'lucide-react';
 
 const A4BorderDesigner = () => {
   const [borderWidth, setBorderWidth] = useState(0.8);
@@ -9,7 +9,7 @@ const A4BorderDesigner = () => {
   const [patternType, setPatternType] = useState('diagonal');
   const [content, setContent] = useState('Your document content goes here...\n\nThis is a sample A4 page with a customizable colorful border.\n\nYou can modify the border width, colors, and patterns using the controls on the left.');
   const [title, setTitle] = useState('Document Title');
-  const [showIcons, setShowIcons] = useState(false);
+  const [showIconPanel, setShowIconPanel] = useState(false);
   const [selectedIcons, setSelectedIcons] = useState([]);
   const [iconSpacing, setIconSpacing] = useState(3);
   const [iconSize, setIconSize] = useState(0.4);
@@ -17,47 +17,27 @@ const A4BorderDesigner = () => {
   const [iconOpacity, setIconOpacity] = useState(0.7);
 
   const availableIcons = [
-    // Geometric Shapes
-    { name: 'Circle', category: 'geometric', svg: '<circle cx="12" cy="12" r="10" fill="currentColor"/>' },
-    { name: 'Triangle', category: 'geometric', svg: '<polygon points="12,2 22,20 2,20" fill="currentColor"/>' },
-    { name: 'Square', category: 'geometric', svg: '<rect x="4" y="4" width="16" height="16" fill="currentColor"/>' },
-    { name: 'Hexagon', category: 'geometric', svg: '<polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="currentColor"/>' },
-    { name: 'Diamond', category: 'geometric', svg: '<polygon points="12,2 22,12 12,22 2,12" fill="currentColor"/>' },
-    { name: 'Pentagon', category: 'geometric', svg: '<polygon points="12,2 22,9 18,22 6,22 2,9" fill="currentColor"/>' },
-    { name: 'Spiral', category: 'geometric', svg: '<path d="M12,2 Q22,12 12,22 Q2,12 12,2" fill="none" stroke="currentColor" stroke-width="2"/>' },
-    
-    // Science Icons
-    { name: 'Atom', category: 'science', svg: '<circle cx="12" cy="12" r="3" fill="currentColor"/><ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="2"/>' },
-    { name: 'DNA', category: 'science', svg: '<path d="M6,2 Q12,8 18,2 Q12,8 6,14 Q12,20 18,14 Q12,20 6,22" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="16" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/><circle cx="16" cy="18" r="1" fill="currentColor"/>' },
-    { name: 'Beaker', category: 'science', svg: '<path d="M8,2 h8 v6 l4,12 H4 l4,-12 V2 z" fill="currentColor"/><rect x="10" y="6" width="4" height="2" fill="white"/>' },
-    { name: 'Microscope', category: 'science', svg: '<rect x="6" y="2" width="2" height="8" fill="currentColor"/><circle cx="7" cy="12" r="3" fill="currentColor"/><rect x="2" y="20" width="20" height="2" fill="currentColor"/><rect x="10" y="14" width="8" height="2" fill="currentColor"/>' },
-    { name: 'Gear', category: 'science', svg: '<path d="M12,2 l2,2 h2 l2,-2 v2 l2,2 v2 l-2,2 v2 l2,2 v2 l-2,2 h-2 l-2,2 h-2 l-2,-2 h-2 l-2,2 v-2 l-2,-2 v-2 l2,-2 v-2 l-2,-2 v-2 l2,-2 h2 l2,-2 z" fill="currentColor"/><circle cx="12" cy="12" r="3" fill="white"/>' },
-    { name: 'Molecule', category: 'science', svg: '<circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/><line x1="6" y1="6" x2="18" y2="6" stroke="currentColor" stroke-width="2"/><line x1="6" y1="6" x2="12" y2="18" stroke="currentColor" stroke-width="2"/><line x1="18" y1="6" x2="12" y2="18" stroke="currentColor" stroke-width="2"/>' },
-    
-    // History Icons
-    { name: 'Scroll', category: 'history', svg: '<path d="M4,6 Q2,6 2,8 v8 Q2,18 4,18 h16 Q22,18 22,16 V8 Q22,6 20,6 z" fill="currentColor"/><path d="M2,8 Q4,8 4,10 v4 Q4,16 2,16" fill="white"/><path d="M22,8 Q20,8 20,10 v4 Q20,16 22,16" fill="white"/>' },
-    { name: 'Hourglass', category: 'history', svg: '<path d="M6,2 h12 v6 l-6,6 l6,6 v6 H6 v-6 l6,-6 l-6,-6 z" fill="currentColor"/><rect x="8" y="4" width="8" height="2" fill="white"/>' },
-    { name: 'Compass', category: 'history', svg: '<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="12,2 14,10 12,12 10,10" fill="currentColor"/><polygon points="12,22 10,14 12,12 14,14" fill="currentColor"/><polygon points="2,12 10,10 12,12 10,14" fill="currentColor"/><polygon points="22,12 14,14 12,12 14,10" fill="currentColor"/>' },
-    { name: 'Column', category: 'history', svg: '<rect x="8" y="2" width="8" height="2" fill="currentColor"/><rect x="9" y="4" width="6" height="16" fill="currentColor"/><rect x="8" y="20" width="8" height="2" fill="currentColor"/>' },
-    { name: 'Shield', category: 'history', svg: '<path d="M12,2 L20,6 v6 Q20,18 12,22 Q4,18 4,12 V6 z" fill="currentColor"/><path d="M12,4 L17,7 v5 Q17,16 12,19 Q7,16 7,12 V7 z" fill="white"/>' },
-    { name: 'Quill', category: 'history', svg: '<path d="M2,20 L8,14 L20,2 Q22,2 22,4 L10,16 L4,22 Q2,22 2,20" fill="currentColor"/><path d="M8,14 L14,8" stroke="white" stroke-width="2"/>' },
-    
-    // Literature Icons
-    { name: 'Book', category: 'literature', svg: '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><path d="M12,4 v16" stroke="white" stroke-width="2"/><rect x="6" y="8" width="4" height="1" fill="white"/><rect x="14" y="8" width="4" height="1" fill="white"/>' },
-    { name: 'Feather', category: 'literature', svg: '<path d="M2,20 Q8,14 14,8 Q18,4 20,2 Q22,2 22,4 Q20,8 16,12 Q10,18 4,22 Q2,22 2,20" fill="currentColor"/><path d="M6,16 Q12,10 16,6" stroke="white" stroke-width="1"/>' },
-    { name: 'Inkwell', category: 'literature', svg: '<rect x="6" y="8" width="12" height="8" rx="2" fill="currentColor"/><rect x="8" y="10" width="8" height="4" fill="white"/><rect x="10" y="2" width="4" height="8" fill="currentColor"/>' },
-    { name: 'Bookmark', category: 'literature', svg: '<path d="M8,2 h8 v20 l-4,-4 l-4,4 z" fill="currentColor"/><rect x="10" y="6" width="4" height="1" fill="white"/>' },
-    { name: 'Laurel', category: 'literature', svg: '<path d="M4,12 Q6,8 8,6 Q10,4 12,4 Q14,4 16,6 Q18,8 20,12 Q18,16 16,18 Q14,20 12,20 Q10,20 8,18 Q6,16 4,12" fill="currentColor"/><path d="M7,10 Q9,8 11,8 Q13,8 15,10" fill="white"/><path d="M7,14 Q9,16 11,16 Q13,16 15,14" fill="white"/>' },
-    { name: 'Typewriter', category: 'literature', svg: '<rect x="4" y="8" width="16" height="8" rx="1" fill="currentColor"/><rect x="6" y="10" width="2" height="2" fill="white"/><rect x="9" y="10" width="2" height="2" fill="white"/><rect x="12" y="10" width="2" height="2" fill="white"/><rect x="15" y="10" width="2" height="2" fill="white"/><rect x="8" y="18" width="8" height="2" fill="currentColor"/>' }
+    { name: 'Circle', svg: '<circle cx="12" cy="12" r="10" fill="currentColor"/>' },
+    { name: 'Triangle', svg: '<polygon points="12,2 22,20 2,20" fill="currentColor"/>' },
+    { name: 'Square', svg: '<rect x="4" y="4" width="16" height="16" fill="currentColor"/>' },
+    { name: 'Hexagon', svg: '<polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="currentColor"/>' },
+    { name: 'Diamond', svg: '<polygon points="12,2 22,12 12,22 2,12" fill="currentColor"/>' },
+    { name: 'Star', svg: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>' }
   ];
 
   const presetColorSchemes = [
     { name: 'Sunset', colors: ['#ff6b6b', '#ff8e53', '#ff6b9d', '#c44569'] },
     { name: 'Ocean', colors: ['#4ecdc4', '#45b7d1', '#96ceb4', '#54a0ff'] },
-    { name: 'Forest', colors: ['#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e'] },
-    { name: 'Autumn', colors: ['#e17055', '#fdcb6e', '#e84393', '#fd79a8'] },
-    { name: 'Neon', colors: ['#00ff88', '#00d4ff', '#ff0080', '#ffff00'] }
+    { name: 'Forest', colors: ['#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e'] }
   ];
+
+  const toggleIcon = (icon) => {
+    setSelectedIcons(prev => 
+      prev.some(i => i.name === icon.name) 
+        ? prev.filter(i => i.name !== icon.name) 
+        : [...prev, icon]
+    );
+  };
 
   const getBorderStyle = () => {
     const borderWidthCm = `${borderWidth}cm`;
@@ -72,18 +52,6 @@ const A4BorderDesigner = () => {
         return {
           border: `${borderWidthCm} solid ${colors[0]}`
         };
-      case 'dashed':
-        return {
-          border: `${borderWidthCm} dashed ${colors[0]}`
-        };
-      case 'dotted':
-        return {
-          border: `${borderWidthCm} dotted ${colors[0]}`
-        };
-      case 'double':
-        return {
-          border: `${borderWidthCm} double ${colors[0]}`
-        };
       case 'pattern':
         return {
           border: `${borderWidthCm} solid #f0f0f0`,
@@ -92,8 +60,7 @@ const A4BorderDesigner = () => {
         };
       default:
         return {
-          border: `${borderWidthCm} solid`,
-          borderImage: `linear-gradient(${gradientDirection}, ${colors.join(', ')}) 1`
+          border: `${borderWidthCm} ${borderStyle} ${colors[0]}`
         };
     }
   };
@@ -102,16 +69,11 @@ const A4BorderDesigner = () => {
     switch (patternType) {
       case 'diagonal':
         return `linear-gradient(45deg, ${colors[0]} 25%, transparent 25%), 
-                linear-gradient(-45deg, ${colors[1]} 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, ${colors[2]} 75%), 
-                linear-gradient(-45deg, transparent 75%, ${colors[3]} 75%)`;
+                linear-gradient(-45deg, ${colors[1]} 25%, transparent 25%)`;
       case 'checkerboard':
-        return `linear-gradient(90deg, ${colors[0]} 50%, ${colors[1]} 50%), 
-                linear-gradient(${colors[2]} 50%, ${colors[3]} 50%)`;
-      case 'stripes':
-        return `linear-gradient(90deg, ${colors[0]} 25%, ${colors[1]} 25%, ${colors[1]} 50%, ${colors[2]} 50%, ${colors[2]} 75%, ${colors[3]} 75%)`;
+        return `linear-gradient(45deg, ${colors[0]} 50%, ${colors[1]} 50%)`;
       default:
-        return `linear-gradient(45deg, ${colors[0]} 25%, transparent 25%)`;
+        return `linear-gradient(90deg, ${colors.join(', ')})`;
     }
   };
 
@@ -125,168 +87,32 @@ const A4BorderDesigner = () => {
     setColors(preset.colors);
   };
 
-  const downloadHTML = () => {
-    const iconsSvgCode = showIcons && selectedIcons.length > 0 ? `
-        .border-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .border-icon {
-            position: absolute;
-            color: ${iconColor};
-            opacity: ${iconOpacity};
-        }
-        
-        .border-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-    ` : '';
-
-    const iconsHtmlCode = showIcons && selectedIcons.length > 0 ? `
-        <div class="border-icons">
-            ${generateStaticIcons()}
-        </div>
-    ` : '';
-
-    const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        
-        .a4-page {
-            width: 21cm;
-            height: 29.7cm;
-            margin: 0 auto;
-            background: white;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            ${Object.entries(getBorderStyle()).map(([key, value]) => `${key}: ${value};`).join('\n            ')}
-        }
-        
-        .page-content {
-            padding: 1cm;
-            height: calc(100% - 2cm);
-            overflow: hidden;
-        }
-        
-        h1 {
-            margin-bottom: 1cm;
-            color: #333;
-        }
-        
-        p {
-            line-height: 1.6;
-            color: #555;
-            white-space: pre-wrap;
-        }
-        
-        ${iconsSvgCode}
-        
-        @media print {
-            body { 
-                background: white; 
-                padding: 0; 
-            }
-            .a4-page { 
-                margin: 0; 
-                box-shadow: none; 
-                page-break-after: always; 
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="a4-page">
-        ${iconsHtmlCode}
-        <div class="page-content">
-            <h1>${title}</h1>
-            <p>${content}</p>
-        </div>
-    </div>
-</body>
-</html>`;
-
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'a4-bordered-page.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const generateStaticIcons = () => {
-    const icons = [];
-    const pageWidth = 21; // cm
-    const pageHeight = 29.7; // cm
-    const spacing = iconSpacing; // cm
-    const iconSizeCm = iconSize; // cm
+  const generateIcons = () => {
+    if (selectedIcons.length === 0) return null;
     
-    // Generate icons for each border
-    ['top', 'bottom', 'left', 'right'].forEach(side => {
-      const positions = [];
-      
-      if (side === 'top' || side === 'bottom') {
-        for (let x = spacing; x < pageWidth - spacing; x += spacing) {
-          positions.push(x);
-        }
-      } else {
-        for (let y = spacing; y < pageHeight - spacing; y += spacing) {
-          positions.push(y);
-        }
-      }
-      
-      positions.forEach((pos, index) => {
-        const randomIcon = selectedIcons[index % selectedIcons.length];
-        let style = '';
-        
-        switch (side) {
-          case 'top':
-            style = `left: ${pos}cm; top: ${borderWidth/2 - iconSizeCm/2}cm;`;
-            break;
-          case 'bottom':
-            style = `left: ${pos}cm; bottom: ${borderWidth/2 - iconSizeCm/2}cm;`;
-            break;
-          case 'left':
-            style = `left: ${borderWidth/2 - iconSizeCm/2}cm; top: ${pos}cm;`;
-            break;
-          case 'right':
-            style = `right: ${borderWidth/2 - iconSizeCm/2}cm; top: ${pos}cm;`;
-            break;
-        }
-        
-        icons.push(`
-            <div class="border-icon" style="${style} width: ${iconSizeCm}cm; height: ${iconSizeCm}cm;">
-                <svg viewBox="0 0 24 24">${randomIcon.svg}</svg>
+    return (
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(20)].map((_, i) => {
+          const icon = selectedIcons[i % selectedIcons.length];
+          return (
+            <div 
+              key={i}
+              className="absolute"
+              style={{
+                color: iconColor,
+                opacity: iconOpacity,
+                width: `${iconSize}cm`,
+                height: `${iconSize}cm`,
+                left: `${Math.random() * 90 + 5}%`,
+                top: `${Math.random() * 90 + 5}%`
+              }}
+            >
+              <svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: icon.svg }} />
             </div>
-        `);
-      });
-    });
-    
-    return icons.join('');
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -333,7 +159,6 @@ const A4BorderDesigner = () => {
                   <option value="solid">Solid</option>
                   <option value="dashed">Dashed</option>
                   <option value="dotted">Dotted</option>
-                  <option value="double">Double</option>
                   <option value="pattern">Pattern</option>
                 </select>
               </div>
@@ -350,11 +175,6 @@ const A4BorderDesigner = () => {
                     <option value="45deg">Diagonal ↗</option>
                     <option value="90deg">Vertical ↑</option>
                     <option value="0deg">Horizontal →</option>
-                    <option value="135deg">Diagonal ↖</option>
-                    <option value="180deg">Horizontal ←</option>
-                    <option value="225deg">Diagonal ↙</option>
-                    <option value="270deg">Vertical ↓</option>
-                    <option value="315deg">Diagonal ↘</option>
                   </select>
                 </div>
               )}
@@ -370,7 +190,6 @@ const A4BorderDesigner = () => {
                   >
                     <option value="diagonal">Diagonal</option>
                     <option value="checkerboard">Checkerboard</option>
-                    <option value="stripes">Stripes</option>
                   </select>
                 </div>
               )}
@@ -400,7 +219,7 @@ const A4BorderDesigner = () => {
               
               {/* Preset Colors */}
               <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Preset Color Schemes</label>
+                <label className="block text-sm font-medium mb-2">Color Presets</label>
                 <div className="grid grid-cols-1 gap-2">
                   {presetColorSchemes.map((preset, index) => (
                     <button
@@ -421,6 +240,88 @@ const A4BorderDesigner = () => {
                     </button>
                   ))}
                 </div>
+              </div>
+              
+              {/* Icon Selection */}
+              <div className="mb-6">
+                <button 
+                  onClick={() => setShowIconPanel(!showIconPanel)}
+                  className="flex items-center space-x-2 mb-2 text-blue-600"
+                >
+                  <Grid3X3 size={20} />
+                  <span>Border Icons ({selectedIcons.length})</span>
+                </button>
+
+                {showIconPanel && (
+                  <div className="bg-white p-4 rounded-lg border border-gray-200">
+                    <h3 className="font-medium mb-2">Select Icons</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {availableIcons.map((icon, index) => (
+                        <div 
+                          key={index}
+                          onClick={() => toggleIcon(icon)}
+                          className={`p-2 border rounded-md cursor-pointer ${
+                            selectedIcons.some(i => i.name === icon.name) 
+                              ? 'border-blue-500 bg-blue-50' 
+                              : 'border-gray-200'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <svg 
+                              viewBox="0 0 24 24" 
+                              width="20" 
+                              height="20"
+                              className="text-gray-800"
+                              dangerouslySetInnerHTML={{ __html: icon.svg }}
+                            />
+                            <span>{icon.name}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {selectedIcons.length > 0 && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium mb-2">Icon Settings</label>
+                        <div className="space-y-2">
+                          <div>
+                            <label className="text-xs">Size (cm)</label>
+                            <input
+                              type="range"
+                              min="0.1"
+                              max="1"
+                              step="0.1"
+                              value={iconSize}
+                              onChange={(e) => setIconSize(parseFloat(e.target.value))}
+                              className="w-full"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs">Color</label>
+                            <input
+                              type="color"
+                              value={iconColor}
+                              onChange={(e) => setIconColor(e.target.value)}
+                              className="w-full h-8"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs">Opacity</label>
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.1"
+                              value={iconOpacity}
+                              onChange={(e) => setIconOpacity(parseFloat(e.target.value))}
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               
               {/* Content */}
@@ -446,7 +347,15 @@ const A4BorderDesigner = () => {
               
               {/* Download Button */}
               <button
-                onClick={downloadHTML}
+                onClick={() => {
+                  const html = document.documentElement.outerHTML;
+                  const blob = new Blob([html], { type: 'text/html' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'border-design.html';
+                  a.click();
+                }}
                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <Download size={20} />
@@ -471,6 +380,7 @@ const A4BorderDesigner = () => {
                       ...getBorderStyle()
                     }}
                   >
+                    {generateIcons()}
                     <div
                       className="overflow-hidden"
                       style={{
@@ -483,17 +393,6 @@ const A4BorderDesigner = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-blue-800 mb-2">How to use:</h3>
-                <ul className="text-sm text-blue-700 space-y-1">
-                  <li>• Adjust border width, style, and colors using the controls</li>
-                  <li>• Try different preset color schemes</li>
-                  <li>• Edit your document title and content</li>
-                  <li>• Download the HTML file when you're satisfied</li>
-                  <li>• Open the downloaded file in any browser to view or print</li>
-                </ul>
               </div>
             </div>
           </div>
