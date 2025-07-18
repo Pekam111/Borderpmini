@@ -1,0 +1,15 @@
+{
+     "name": "a4-border-designer",
+     "version": "1.0.0",
+     "private": true,
+     "dependencies": {
+       "react": "^17.0.2",
+       "react-dom": "^17.0.2",
+       "lucide-react": "^0.100.0",
+       "react-scripts": "5.0.1"
+     },
+     "scripts": {
+       "start": "react-scripts start",
+       "build": "react-scripts build"
+     }
+   }
